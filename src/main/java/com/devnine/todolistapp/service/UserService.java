@@ -27,8 +27,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
     public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
+        if (!existsById(id)) {
             throw new UserNotFoundException(id);
         }
         userRepository.deleteById(id);

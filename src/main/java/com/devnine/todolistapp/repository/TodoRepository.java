@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
-    // 완료된 할 일 조회 쿼리
-    @Query("SELECT t FROM Todo t WHERE t.completed = true")
-    List<Todo> findCompletedTodos();
+    // 특정 사용자의 할 일 목록 조회
+    @Query("SELECT t FROM Todo t WHERE t.user.id = :userId")
+    List<Todo> findByUserId(Long userId);
 }
