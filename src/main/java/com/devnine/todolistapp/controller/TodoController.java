@@ -1,5 +1,6 @@
 package com.devnine.todolistapp.controller;
 
+import com.devnine.todolistapp.exception.TodoNotFoundException;
 import com.devnine.todolistapp.model.Todo;
 import com.devnine.todolistapp.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/todos")
+@CrossOrigin(origins = "*")
 public class TodoController {
 
     @Autowired
@@ -27,13 +29,13 @@ public class TodoController {
     @GetMapping("/{id}")
     public Todo getTodoById(@PathVariable Long id) {
         return todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Todo not found: " + id));
+                .orElseThrow(() -> new TodoNotFoundException(id));
     }
 
     @PutMapping("/{id}")
     public Todo updateTodo(@PathVariable Long id, @RequestBody Todo updatedTodo) {
         Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Todo not found: " + id));
+                .orElseThrow(() -> new TodoNotFoundException(id));
         todo.setTitle(updatedTodo.getTitle());
         todo.setDescription(updatedTodo.getDescription());
         todo.setCompleted(updatedTodo.isCompleted());
@@ -42,6 +44,9 @@ public class TodoController {
 
     @DeleteMapping("/{id}")
     public void deleteTodo(@PathVariable Long id) {
+        if (!todoRepository.existsById(id)) {
+            throw new TodoNotFoundException(id);
+        }
         todoRepository.deleteById(id);
     }
 }
