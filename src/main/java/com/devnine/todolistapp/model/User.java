@@ -19,8 +19,8 @@ public class User {
 
     private String username;
     private String email;
+    private String password;
 
-    // User와 Todo의 관계
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Todo> todos;
 }

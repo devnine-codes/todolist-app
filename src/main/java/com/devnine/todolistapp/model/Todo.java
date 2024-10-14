@@ -21,14 +21,11 @@ public class Todo {
     private String description;
     private boolean completed;
 
-    // 우선순위 필드 추가 (LOW, MEDIUM, HIGH)
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    // 마감일 필드 추가
     private LocalDate dueDate;
 
-    // User와의 관계 (다대일)
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
