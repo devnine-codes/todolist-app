@@ -4,11 +4,14 @@ import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "mysecretkey";
+    private final String SECRET_KEY = "devninekey";
+    private final Set<String> tokenBlacklist = new HashSet<>();
 
     public String generateToken(String username) {
         return Jwts.builder()
@@ -28,7 +31,13 @@ public class JwtUtil {
     }
 
     public boolean validateToken(String token, String username) {
-        return extractUsername(token).equals(username) && !isTokenExpired(token);
+        return !tokenBlacklist.contains(token) &&
+                extractUsername(token).equals(username) &&
+                !isTokenExpired(token);
+    }
+
+    public void invalidateToken(String token) {
+        tokenBlacklist.add(token);
     }
 
     private boolean isTokenExpired(String token) {

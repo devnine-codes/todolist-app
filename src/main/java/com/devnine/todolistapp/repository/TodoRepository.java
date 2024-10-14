@@ -18,4 +18,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     // 특정 기간 내 마감일 조회
     List<Todo> findByDueDateBetween(LocalDate startDate, LocalDate endDate);
+
+    // 검색 조회
+    @Query("SELECT t FROM Todo t WHERE LOWER(t.title) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(t.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Todo> searchByKeyword(String keyword);
+
 }

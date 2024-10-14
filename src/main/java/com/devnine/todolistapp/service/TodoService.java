@@ -66,4 +66,8 @@ public class TodoService {
         }
         todoRepository.deleteById(id);
     }
+
+    public List<Todo> searchByKeyword(String keyword) {
+        return todoRepository.searchByKeyword(keyword);
+    }
 }

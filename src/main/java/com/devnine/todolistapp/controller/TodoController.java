@@ -38,4 +38,16 @@ public class TodoController {
     public void deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
     }
+
+    @GetMapping("/search")
+    public List<Todo> searchTodos(@RequestParam String keyword) {
+        return todoService.searchByKeyword(keyword);
+    }
+
+    @PutMapping("/{id}/toggle")
+    public Todo toggleTodoCompleted(@PathVariable Long id) {
+        Todo todo = todoService.getTodoById(id);
+        todo.setCompleted(!todo.isCompleted());
+        return todoService.createTodo(todo);
+    }
 }

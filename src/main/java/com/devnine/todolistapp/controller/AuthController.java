@@ -36,4 +36,13 @@ public class AuthController {
             throw new RuntimeException("Invalid email or password");
         }
     }
+
+    @PostMapping("/logout")
+    public Map<String, String> logout(@RequestHeader("Authorization") String token) {
+        jwtUtil.invalidateToken(token.substring(7)); // "Bearer " 부분 제거
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Successfully logged out");
+        return response;
+    }
+
 }
